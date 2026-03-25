@@ -18,32 +18,47 @@ def compute_phi(A):
     return kin + 1
 
 
+# compute base (pre-deformation) column-stochastic matrix
+def compute_base_W(A):
+    N = A.shape[0]
+    W0 = np.zeros((N, N))
+    for j in range(N):
+        column = A[:, j]
+        col_sum = np.sum(column)
+        if col_sum == 0:
+            W0[:, j] = 1 / N
+        else:
+            W0[:, j] = column / col_sum
+    return W0
+
+
+
 # build q-deformed web matrix W(q)
 def q_deformed_W(A, q):
     N = A.shape[0]
     W = np.zeros((N, N))
 
+    # compute base matrix (printing moved to caller so it happens once)
+    W0 = compute_base_W(A)
+
     phi = compute_phi(A)
 
-    for j in range(N): # outgoing from j column
+    for j in range(N):  # outgoing from j column
         column = A[:, j]
 
         if np.sum(column) == 0:
             # dangling node
-            W[:, j] = 1/N
+            W[:, j] = 1 / N
             continue
 
         weights = np.zeros(N)
-
         for i in range(N):
             if A[i, j] == 1:
                 weights[i] = q_number(phi[i], q) / phi[i]
 
-
         denom = np.sum(weights)
         if denom > 0:
             W[:, j] = weights / denom
-# print(W)
 
     return W
 
@@ -76,10 +91,14 @@ def q_pagerank(A, q, alpha=0.85):
 # funxtion testing with example matrix
 A = np.array([
     [1, 1, 1, 0],
-    [1, 0, 1, 1],
+    [1, 0, 1, 0],
     [1, 1, 0, 0],
     [0, 1, 0, 0]
 ])
+
+# print the base column-stochastic matrix once
+W0 = compute_base_W(A)
+print('\nColumn-stochastic matrix (pre-deformation):\n', W0)
 
 qs = [0.5]
 
@@ -90,6 +109,7 @@ for q in qs:
 # Visually analyze rank changes with q
 import matplotlib.pyplot as plt
 
+# (Start, end, range points in between)
 qs = np.linspace(0.0,10.0, 5)
 results = []
 for q in qs:
