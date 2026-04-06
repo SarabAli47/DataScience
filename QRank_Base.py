@@ -93,17 +93,18 @@ def q_pagerank(A, q, alpha=0.85):
 # funxtion testing with example matrix
 # A here serves as a matrix of connections. This is not the stochastic column matrix
 A = np.array([
-    [1, 1, 1, 0],
-    [1, 0, 1, 1],
-    [1, 1, 0, 0],
-    [0, 1, 0, 1]
+    [0, 1, 1, 0, 0],
+    [1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1],
+    [0, 1, 0, 1, 0],
+    [0, 1, 0, 1, 1]
 ])
 
 # print the base column-stochastic matrix once
 W0 = compute_base_W(A)
 print('\nColumn-stochastic matrix (pre-deformation):\n', W0)
 
-qs = [0.5]
+qs = [0.5, 1, 2, 5, 10, 20, 50, 100]
 
 for q in qs:
     r = q_pagerank(A, q)
@@ -113,7 +114,7 @@ for q in qs:
 import matplotlib.pyplot as plt
 
 # (Start, end, range points in between)
-qs = np.linspace(0.0,20.0, 200)
+qs = np.linspace(0.0,40.0, 200)
 results = []
 for q in qs:
     r = q_pagerank(A, q)
