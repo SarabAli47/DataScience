@@ -19,14 +19,19 @@ def compute_phi(A):
 
 
 # compute base (pre-deformation) column-stochastic matrix
+# A.shape[0] gives the number of rows in the adjacency matrix A, which corresponds to the number of nodes in the graph.
 def compute_base_W(A):
     N = A.shape[0]
+# W0 is initialized as a zero matrix of size N x N, where N is the number of nodes.
     W0 = np.zeros((N, N))
+# The loop iterates over each column j of the adjacency matrix A, calculating the sum of that column (col_sum).
     for j in range(N):
         column = A[:, j]
         col_sum = np.sum(column)
+# If col_sum is zero, it means that node j has no outgoing edges (a dangling node), and we assign a uniform distribution (1/N) to all entries in column j of W0.
         if col_sum == 0:
             W0[:, j] = 1 / N
+# Otherwise, we normalize the column by dividing each entry by col_sum to create a column-stochastic matrix.
         else:
             W0[:, j] = column / col_sum
     return W0
@@ -51,6 +56,7 @@ def q_deformed_W(A, q):
             W[:, j] = 1 / N
             continue
 
+# phi[i] is the in-degree of node i plus one, and q_number(phi[i], q) computes the q-deformed value of that in-degree.
         weights = np.zeros(N)
         for i in range(N):
             if A[i, j] == 1:
