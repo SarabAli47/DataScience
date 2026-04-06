@@ -63,6 +63,8 @@ def q_deformed_W(A, q):
     return W
 
 # build Google matrix G(q)
+# alpha is the teleportation parameter (default 0.85)
+#np.ones((N, N)) / N creates a matrix where each entry is 1/N, representing the uniform distribution for teleportation.
 def google_matrix(W, alpha=0.85):
     N = W.shape[0]
     return alpha * W + (1 - alpha) * np.ones((N, N)) / N
@@ -72,7 +74,7 @@ def google_matrix(W, alpha=0.85):
 def pagerank(G, tol=1e-8, max_iter=1000):
     N = G.shape[0]
     r = np.ones(N) / N
-
+# Computes iterations until convergence or max iterations reached, using L1 norm to check for convergence
     for _ in range(max_iter):
         r_new = G @ r
         if np.linalg.norm(r_new - r, 1) < tol:
@@ -89,11 +91,12 @@ def q_pagerank(A, q, alpha=0.85):
     return r
 
 # funxtion testing with example matrix
+# A here serves as a matrix of connections. This is not the stochastic column matrix
 A = np.array([
     [1, 1, 1, 0],
-    [1, 0, 1, 0],
+    [1, 0, 1, 1],
     [1, 1, 0, 0],
-    [0, 1, 0, 0]
+    [0, 1, 0, 1]
 ])
 
 # print the base column-stochastic matrix once
@@ -110,7 +113,7 @@ for q in qs:
 import matplotlib.pyplot as plt
 
 # (Start, end, range points in between)
-qs = np.linspace(0.0,10.0, 5)
+qs = np.linspace(0.0,20.0, 200)
 results = []
 for q in qs:
     r = q_pagerank(A, q)
