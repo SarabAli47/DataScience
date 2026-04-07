@@ -98,10 +98,10 @@ def q_pagerank(A, q, alpha=0.85):
 
 # A here serves as a matrix of connections. This is not the stochastic column matrix
 A = np.array([
-    [0, 1, 1, 0, 0],
-    [1, 0, 1, 1, 1],
+    [0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 1],
     [1, 1, 1, 0, 1],
-    [0, 1, 0, 1, 0],
+    [0, 0, 0, 1, 0],
     [0, 1, 0, 1, 1]
 ])
 
@@ -119,7 +119,7 @@ for q in qs:
 import matplotlib.pyplot as plt
 # qs is a a set of equally divided points given by the third intiger between first and second float.
 # qs = np.linspace(start, end, range)
-qs = np.linspace(0.0,40.0, 200)
+qs = np.linspace(0.0,200.0,200)
 # results is an array of all the q points for the plot between float one and float 2
 results = []
 for q in qs:
