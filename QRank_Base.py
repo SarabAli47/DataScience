@@ -61,7 +61,7 @@ def q_deformed_W(A, q):
         for i in range(N):
             if A[i, j] == 1:
                 weights[i] = q_number(phi[i], q) / phi[i]
-
+# Renormalize the weights to ensure that the column sums to 1, making W a column-stochastic matrix. The sum of the weights is calculated, and if it's greater than zero, each weight is divided by this sum to normalize the column.
         denom = np.sum(weights)
         if denom > 0:
             W[:, j] = weights / denom
@@ -89,7 +89,7 @@ def pagerank(G, tol=1e-8, max_iter=1000):
 
     return r
 
-# full pipeline to compute q-deformed PageRank
+# main function to compute q-deformed PageRank
 def q_pagerank(A, q, alpha=0.85):
     Wq = q_deformed_W(A, q)
     Gq = google_matrix(Wq, alpha)
