@@ -28,7 +28,7 @@ def compute_base_W(A):
     for j in range(N):
         column = A[:, j]
         col_sum = np.sum(column)
-# If col_sum is zero, it means that node j has no outgoing edges (a dangling node), and we assign a uniform distribution (1/N) to all entries in column j of W0.
+# If col_sum is zero, it means that node j is a dangling node, and we assign a uniform distribution (1/N) to all entries in column j of W0.
         if col_sum == 0:
             W0[:, j] = 1 / N
 # Otherwise, we normalize the column by dividing each entry by col_sum to create a column-stochastic matrix.
@@ -70,7 +70,7 @@ def q_deformed_W(A, q):
 
 # build Google matrix G(q)
 # alpha is the teleportation parameter (default 0.85)
-#np.ones((N, N)) / N creates a matrix where each entry is 1/N, representing the uniform distribution for teleportation.
+# np.ones((N, N)) / N creates a matrix where each entry is 1/N, representing the uniform distribution for teleportation.
 def google_matrix(W, alpha=0.85):
     N = W.shape[0]
     return alpha * W + (1 - alpha) * np.ones((N, N)) / N
@@ -118,9 +118,10 @@ for q in qs:
 
 # Visually analyze rank changes with q
 import matplotlib.pyplot as plt
-
-# (Start, end, range points in between)
+# qs is a a set of equally divided points given by the third intiger between first and second float.
+# qs = np.linspace(start, end, range)
 qs = np.linspace(0.0,40.0, 200)
+# results is an array of all the q points for the plot between float one and float 2
 results = []
 for q in qs:
     r = q_pagerank(A, q)
