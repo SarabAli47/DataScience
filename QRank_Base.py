@@ -96,7 +96,6 @@ def q_pagerank(A, q, alpha=0.85):
     r = pagerank(Gq)
     return r
 
-# funxtion testing with example matrix
 # A here serves as a matrix of connections. This is not the stochastic column matrix
 A = np.array([
     [0, 1, 1, 0, 0],
