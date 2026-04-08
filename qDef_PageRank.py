@@ -8,7 +8,7 @@ def q_number(m, q):
     return (1 - q**m) / (1 - q)
 
 
-# compute phi function. This calculates the phi value for each node, which is the sum of its outgoing links plus one. This is used in the q-deformed matrix construction to determine the weights for each node.
+# compute phi function. This calculates the phi value for each node, which is the sum of its incoming links plus one. This is used in the q-deformed matrix construction to determine the weights for each node.
 def compute_phi(A):
     return np.sum(A, axis=1) + 1
 
