@@ -56,6 +56,7 @@ def q_deformed_W(A, q):
 
 
 # compute Google matrix G from W. This function takes the q-deformed column-stochastic matrix W and computes the Google matrix G by applying the damping factor alpha. The Google matrix is a convex combination of W and a uniform matrix, which ensures that it is column-stochastic and suitable for PageRank computation.
+# E is a matrix of size N x N where each entry is 1/N, representing the uniform distribution over all nodes. The Google matrix G is computed as a weighted sum of W and E, with alpha controlling the balance between following the links (W) and jumping to a random node (E).
 def google_matrix(W, alpha=0.85):
     N = W.shape[0]
     E = np.ones((N, N)) / N
@@ -95,11 +96,14 @@ A = np.array([
 
 # compute and display the base column-stochastic matrix W0 for the given adjacency matrix A. This serves as a reference point for understanding how the q-deformation modifies the transition probabilities in the PageRank computation.
 W0 = compute_base_W(A)
+W = q_deformed_W(A, q=0.5)  # Example q value for demonstration
 print("\nBase column-stochastic matrix:\n", W0)
+print("\nQ-deformed column-stochastic matrix (q=0.5):\n", W)
+
 
 
 # q values to test.
-qs_test = [0.0,0.5,1.0,2.0, 5.0, 10.0, 50.0, 100.0]
+qs_test = [0.0,0.2,0.4,0.6,0.8,1.0, 5.0, 10.0, 50.0, 100.0]
 
 for q in qs_test:
     r = q_pagerank(A, q)
@@ -107,7 +111,7 @@ for q in qs_test:
 
 
 # compute q-deformed PageRank for a range of q values and store the results. This allows us to analyze how the PageRank values change as we vary the deformation parameter q, providing insights into the sensitivity of the PageRank algorithm to this parameter.
-qs = np.linspace(0.0, 100.0, 200)
+qs = np.linspace(0.0, 50.0, 150)
 results = np.array([q_pagerank(A, q) for q in qs])
 
 
